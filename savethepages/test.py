@@ -1,4 +1,8 @@
+"""
+Test application file.
 
+Test the basic upsert logic and the model.
+"""
 import lib
 from models import Page, Label
 
