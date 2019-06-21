@@ -1,4 +1,8 @@
 {
     "python.pythonPath": "venv/bin/python",
-    "python.linting.enabled": true
+    "python.linting.enabled": true,
+    "terminal.integrated.cwd": "savethepages",
+    "code-runner.fileDirectoryAsCwd": true,
+    "code-runner.cwd": "savethepages",
+    "python.terminal.executeInFileDir": true
 }
