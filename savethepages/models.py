@@ -34,10 +34,10 @@ class Page(me.Document):
     date_added = me.DateTimeField(default=datetime.datetime.now)
     date_modified = me.DateTimeField(default=datetime.datetime.now)
 
-    def preview_url(self):
+    def short_url(self):
         return lib.truncate(self.url, width=30)
 
-    def preview_content(self, width=80):
+    def short_content(self, width=80):
         if self.content:
             return lib.truncate(self.content, width)
 
@@ -49,4 +49,4 @@ class Page(me.Document):
         included and newlines are printed as escaped characters.
         """
         return f"<Page: title={self.title!r} status_code={self.status_code!r}"\
-               f" url={self.preview_url()!r} content={self.preview_content(20)!r}>"
+               f" url={self.short_url()!r} content={self.short_content(20)!r}>"
