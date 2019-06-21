@@ -9,8 +9,8 @@ from models import Page, Label
 lib.connect()
 
 
-def test():
-    label = Label.objects(title='_testing').modify(title='_testing')
+def main():
+    label = Label.objects(name='_testing').upsert_one(name='_testing')
     post = Page(
         title="TWO",
         content="<div>",
@@ -21,4 +21,4 @@ def test():
 
 
 if __name__ == "__main__":
-    test()
+    main()
