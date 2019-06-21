@@ -1,5 +1,5 @@
 """
-Example application.
+Tutorial application.
 
 Standalone script to show how to connect to MongoDB, define a model and
 do a valid and invalid operation on it.

@@ -1,5 +1,5 @@
 """
-Test application file.
+Test application.
 
 Test the basic upsert logic and the model.
 """
