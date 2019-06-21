@@ -11,6 +11,9 @@ from models import Page, Label
 
 
 def main():
+    """
+    Main command-line function.
+    """
     name = 'Chrome work testing'
     label = Label.objects(name=name).first()
     label = Label.objects(name=name).upsert_one(name=name)
