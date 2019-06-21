@@ -1,7 +1,10 @@
 """
 Example application.
 
-Code used from an introductory tutorial on Python and Mongo.
+Standalone script to show how to connect to MongoDB, define a model and
+do a valid and invalid operation on it.
+
+Code used from an introductory tutorial on Python and Mongo:
     https://realpython.com/introduction-to-mongodb-and-python/
 """
 import datetime
