@@ -1,8 +1,15 @@
 from lib import connect
-from models import Page
+import models
 
 
 connect()
-for p in Page.objects():
+
+print("Labels")
+for l in models.Label.objects():
+    print(l)
+    print()
+
+print("Pages")
+for p in models.Page.objects():
     print(p)
     print()
