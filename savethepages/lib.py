@@ -1,6 +1,8 @@
 """
 Library module.
 """
+import os
+
 from mongoengine import connect as mongo_connect
 
 import config
@@ -38,14 +40,45 @@ def truncate(text, width=80):
     long word (e.g. a URL) as the entire URL is replaced with '[...]'.
 
     https://stackoverflow.com/questions/2872512/python-truncate-a-long-string/34993870
-
-    Handles ed
     """
     placeholder = "[...]"
     if width < len(placeholder):
-        raise ValueError(f"width must at least be as long as the placeholder length: {len(placeholder)}")
+        raise ValueError("width must at least be as long as the placeholder"
+                         f" length: {len(placeholder)}")
 
     if len(text) > width:
         return f"{text[:width - len(placeholder)]}{placeholder}"
 
     return text
+
+
+def make_absolute(path):
+    """
+    Make a path to a path relative to the app directory absolute.
+    """
+    return os.path.join(config.APP_DIR, path)
+
+
+def read(file_path, exclude_empty_lines=True):
+    """
+    Return contents of a text file.
+
+    Read a text file and return as list of strings, excluding trailing
+    newline characters.
+
+    Note that in order to use the splitlines method on a single string from
+    the input, the entire file will be read into memory at once.
+
+    :param exclude_empty_lines: If True, filter out lines which are empty.
+
+    :return lines: list of str objects.
+    """
+    with open(file_path) as f_in:
+        text = f_in.read()
+
+    lines = text.splitlines(keepends=False)
+
+    if exclude_empty_lines:
+        lines = [l for l in lines if l]
+
+    return lines

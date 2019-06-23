@@ -18,9 +18,8 @@ def main():
     label = Label.objects(name=name).first()
     label = Label.objects(name=name).upsert_one(name=name)
 
-    with open(os.path.join(config.APP_DIR, 'var/urls.txt')) as f_in:
-        pages = [dict(zip(('url', 'title'), line.split(' | ', 1)))
-                 for line in f_in]
+    lines = lib.read(lib.make_absolute('var/urls.txt'))
+    pages = [dict(zip(('url', 'title'), line.split(' | ', 1))) for line in lines]
 
     for page in pages[:10]:
         url = page['url']
