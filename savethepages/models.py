@@ -19,7 +19,7 @@ class Label(me.Document):
     name = me.StringField(max_length=50, unique=True, required=True)
 
     def __str__(self):
-        return f"<Label: name={self.name!r} >"
+        return f"name={self.name!r}"
 
 
 class Page(me.Document):
@@ -42,6 +42,9 @@ class Page(me.Document):
     modified_at = me.DateTimeField(default=datetime.datetime.now)
 
     def clean(self):
+        """
+        Execute on updating objects.
+        """
         self.modified_at = datetime.datetime.now()
 
     def short_url(self, width=70):
@@ -59,8 +62,6 @@ class Page(me.Document):
         included and newlines are printed as escaped characters.
         """
         return (
-            f"<Page:"
             f"\n title={self.title!r} \n status_code={self.status_code!r}"
             f"\n url={self.short_url()!r} \n content={self.short_content()!r}"
-            f"\n >"
         )
