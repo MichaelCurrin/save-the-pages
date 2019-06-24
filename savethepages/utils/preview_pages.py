@@ -1,8 +1,6 @@
-from lib import connect
+import connection
 import models
 
-
-connect()
 
 print("Labels")
 for l in models.Label.objects():

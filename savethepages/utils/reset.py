@@ -1,3 +1,6 @@
+"""
+Reset utility.
+"""
 import lib
 
 

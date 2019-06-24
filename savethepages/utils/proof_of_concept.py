@@ -8,6 +8,7 @@ import os
 import requests
 
 import config
+import connection
 import lib
 from models import Page, Label
 
@@ -17,10 +18,9 @@ def main():
     Main command-line function.
     """
     name = 'Testing'
-    label = Label.objects(name=name).first()
     label = Label.objects(name=name).upsert_one(name=name)
 
-    lines = lib.read(lib.make_absolute('var/urls.txt'))
+    lines = lib.read('var/chrome_onetab.txt')
     pages = [dict(zip(('url', 'title'), line.split(' | ', 1))) for line in lines]
 
     for page in pages[:10]:
@@ -43,5 +43,4 @@ def main():
 
 
 if __name__ == '__main__':
-    lib.connect()
     main()
