@@ -59,7 +59,7 @@ def make_absolute(path):
     return os.path.join(config.APP_DIR, path)
 
 
-def read(file_path, exclude_empty_lines=True):
+def read(file_path, app_relative=True, exclude_empty_lines=True):
     """
     Return contents of a text file.
 
@@ -69,10 +69,16 @@ def read(file_path, exclude_empty_lines=True):
     Note that in order to use the splitlines method on a single string from
     the input, the entire file will be read into memory at once.
 
+    :param app_relative: If True, the file_path argument is expected to be relative
+        to the project's app directory and should be converted to an absolute
+        path. If False, then the path is already a full path.
     :param exclude_empty_lines: If True, filter out lines which are empty.
 
     :return lines: list of str objects.
     """
+    if app_relative:
+        file_path = make_absolute(file_path)
+
     with open(file_path) as f_in:
         text = f_in.read()
 
@@ -82,3 +88,13 @@ def read(file_path, exclude_empty_lines=True):
         lines = [l for l in lines if l]
 
     return lines
+
+
+def handle_onetab_text(file_path):
+    """
+    Extract URL data from a text export created from the OneTab extension.
+    """
+    lines = read(file_path)
+
+    # Zip longest
+    return [dict(zip(('url', 'title'), line.split(' | ', 1))) for line in lines]
