@@ -30,15 +30,19 @@ class Page(me.Document):
     The other metadata on the object makes it easier to manage than having
     a plain text HTML file on disk.
     """
-    title = me.StringField(max_length=200)
-    url = me.StringField(max_length=1000, required=True)
-    content = me.StringField(required=True)
+    title = me.StringField(max_length=300)
+    url = me.StringField(max_length=1000, unique=True, required=True)
+
+    content = me.StringField()
     status_code = me.IntField(max_value=1000)
 
     label = me.ReferenceField(Label, required=True)
 
-    date_added = me.DateTimeField(default=datetime.datetime.now)
-    date_modified = me.DateTimeField(default=datetime.datetime.now)
+    created_at = me.DateTimeField(default=datetime.datetime.now)
+    modified_at = me.DateTimeField(default=datetime.datetime.now)
+
+    def clean(self):
+        self.modified_at = datetime.datetime.now()
 
     def short_url(self, width=70):
         return lib.truncate(self.url, width)
