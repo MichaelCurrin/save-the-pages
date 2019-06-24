@@ -1,5 +1,7 @@
 """
-Main application file.
+Proof of concept application file.
+
+Read from a text file, request each URL and store the URL and content in the DB.
 """
 import os
 
@@ -14,7 +16,7 @@ def main():
     """
     Main command-line function.
     """
-    name = 'Chrome work testing'
+    name = 'Testing'
     label = Label.objects(name=name).first()
     label = Label.objects(name=name).upsert_one(name=name)
 
