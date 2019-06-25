@@ -38,9 +38,9 @@ def insert_page(url, label, title=None):
     try:
         page.save()
     except NotUniqueError:
-        print("exists")
+        return False
     else:
-        print("added")
+        return True
 
 
 def load(label_name, pages_to_import):
@@ -58,11 +58,9 @@ def load(label_name, pages_to_import):
     label = upsert_label(label_name)
     print(repr(label))
 
-    i = -1
-    for i, page_data in enumerate(pages_to_import):
-        print(i+1)
+    for page_data in pages_to_import:
         try:
-            insert_page(
+            new = insert_page(
                 page_data['url'],
                 label,
                 page_data.get('title')
@@ -70,6 +68,11 @@ def load(label_name, pages_to_import):
         except Exception:
             print(page_data)
             raise
+        if new:
+            print("+", end="")
+        else:
+            print(".", end="")
+    print()
 
 
 def main():
