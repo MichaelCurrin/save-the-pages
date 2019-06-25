@@ -17,13 +17,12 @@ def upsert_label(name):
     return labels.upsert_one(name=name)
 
 
-def insert_page(page_data, label):
+def insert_page(url, label, title=None):
     """
     Insert a page record into the DB with given data and label object.
 
     :return: None
     """
-    url = page_data['url']
     # Do this here as adding a look is more involved and on save or validate
     # might not be the right place.
     if len(url) > URL_MAX:
@@ -32,7 +31,7 @@ def insert_page(page_data, label):
         url = parse.urlunsplit(url_data)
 
     page = Page(
-        title=page_data.get('title'),
+        title=title,
         url=url,
         label=label,
     )
@@ -46,9 +45,15 @@ def insert_page(page_data, label):
 
 def load(label_name, pages_to_import):
     """
-    Bulk load pages into the DB with a given label.
+    Bulk load page metadata into the DB with a given label.
+
+    This does not handle any page content or response info but simply minimum
+    useful data to store for a page.
 
     Note that the bulk insert operation will not work in mongoengine.
+
+    :param label_name: str
+    :param pages_to_import: list of dict objects.
     """
     label = upsert_label(label_name)
     print(repr(label))
@@ -57,7 +62,11 @@ def load(label_name, pages_to_import):
     for i, page_data in enumerate(pages_to_import):
         print(i+1)
         try:
-            insert_page(page_data, label)
+            insert_page(
+                page_data['url'],
+                label,
+                page_data.get('title')
+            )
         except Exception:
             print(page_data)
             raise
