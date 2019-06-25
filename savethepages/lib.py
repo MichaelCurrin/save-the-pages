@@ -41,6 +41,9 @@ def truncate(text, width=80):
 
     https://stackoverflow.com/questions/2872512/python-truncate-a-long-string/34993870
     """
+    if not text:
+        return None
+
     placeholder = "[...]"
     if width < len(placeholder):
         raise ValueError("width must at least be as long as the placeholder"
