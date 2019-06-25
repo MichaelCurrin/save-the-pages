@@ -2,9 +2,11 @@
 Models module.
 """
 import datetime
+from urllib import parse
 
 import mongoengine as me
 
+import config
 import lib
 
 
@@ -52,6 +54,29 @@ class Page(me.Document):
 
     created_at = me.DateTimeField(default=datetime.datetime.now)
     modified_at = me.DateTimeField(default=datetime.datetime.now)
+
+    def unpack_url(self):
+        """
+        Return tuple of protocol and domain.
+        """
+        u = parse.urlsplit(self.url)
+
+        return u.scheme, u.netloc
+
+    def is_useful(self):
+        """
+        Determine whether a URL is worth fetching.
+        """
+        protocol, domain = self.unpack_url()
+        if protocol not in config.USE_PROTOCOLS:
+            return False
+        # Ignore anything with a port as it is probably something like
+        # localhost or something requiring authorization.
+        if domain in config.IGNORE_DOMAINS or ":" in domain:
+            return False
+
+        return True
+
 
     @property
     def attempted(self):
