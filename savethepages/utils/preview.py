@@ -8,11 +8,13 @@ import models
 
 
 print("Labels")
-for l in models.Label.objects:
+print(models.Label.objects.count())
+for l in models.Label.objects[:5]:
     print(l)
     print()
 
 print("Pages")
-for p in models.Page.objects:
+print(models.Page.objects.count())
+for p in models.Page.objects[:5]:
     print(p)
     print()
