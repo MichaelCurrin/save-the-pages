@@ -81,12 +81,9 @@ class Page(me.Document):
     @property
     def attempted(self):
         """
-        Helper to determine if the site has been requested yet, whether
-        successful or not.
+        Signal whether an attempt has been made to store a response for the URL.
         """
-        if self.error_message:
-            return False
-        if self.status_code:
+        if self.error_message or self.status_code:
             return True
 
         return False
