@@ -8,6 +8,8 @@ import mongoengine as me
 import lib
 
 
+URL_MAX = 1000
+
 class Label(me.Document):
     """
     Models a webpage label.
@@ -30,13 +32,16 @@ class Page(me.Document):
     The other metadata on the object makes it easier to manage than having
     a plain text HTML file on disk.
     """
-    title = me.StringField(max_length=300)
-    url = me.StringField(max_length=1000, unique=True, required=True)
+    title = me.StringField(max_length=1000)
+    url = me.StringField(max_length=URL_MAX, unique=True, required=True)
 
     content = me.StringField()
     status_code = me.IntField(max_value=1000)
 
-    label = me.ReferenceField(Label, required=True)
+    # Create a link to a single Label and delete pages after the label is
+    # deleted, but at the DB level do not nest/embed in the pages in the label.
+    label = me.ReferenceField(Label, reverse_delete_rule=me.CASCADE,
+                              required=True)
 
     created_at = me.DateTimeField(default=datetime.datetime.now)
     modified_at = me.DateTimeField(default=datetime.datetime.now)
@@ -54,7 +59,7 @@ class Page(me.Document):
         if self.content:
             return lib.truncate(self.content, width)
 
-        return "(not set)"
+        return None
 
     def __str__(self):
         """
