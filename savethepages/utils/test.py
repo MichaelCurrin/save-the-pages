@@ -10,7 +10,11 @@ from models import Page, Label
 def main():
     import connection
 
-    label = Label.objects(name='_testing').upsert_one(name='_testing')
+    labels = Label.objects(name='_testing')
+    if labels.count():
+        label = labels.first()
+    else:
+        label = labels.upsert_one(name='_testing')
 
     post1 = Page(
         title="Foo",
