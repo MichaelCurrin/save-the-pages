@@ -19,14 +19,14 @@ def request_page(url):
 
     try:
         resp = requests.get(url, timeout=10)
-    except requests.Timeout as e:
+    except requests.Timeout:
         error_message = 'timeout'
     except requests.URLRequired:
         error_message = 'URL required'
     except requests.TooManyRedirects:
         error_message = 'Too many redirects'
-    except requests.RequestException as r:
-        error_message = f"Other request error - {r}"
+    except requests.RequestException as e:
+        error_message = f"Other request error - {str(e)}"
     else:
         content = resp.text
         status_code = resp.status_code
@@ -34,23 +34,34 @@ def request_page(url):
     return content, status_code, error_message
 
 
-requested = 0
-skipped = 0
-for page in Page.objects:
-    if page.attempted:
-        skipped += 1
-    else:
-        requested += 1
-        print(f"Fetch: {page.short_url()}")
-        content, status_code, error_message = request_page(page.url)
+passed = 0
+failed = 0
+not_useful = 0
+previously_attempted = 0
 
-        page.content = content
-        page.status_code = status_code
-        page.error_message = error_message
-        page.save()
-        succeeded, message = page.outcome()
-        if not succeeded:
-            print(message)
+try:
+    for page in Page.objects:
+        if not page.is_useful():
+            not_useful += 1
+        elif page.attempted:
+            previously_attempted += 1
+        else:
+            print(f"Fetch: {page.short_url()}")
+            content, status_code, error_message = request_page(page.url)
 
-print(f"\nRequested: {requested:,d}")
-print(f"Skipped: {skipped:,d}")
+            page.content = content
+            page.status_code = status_code
+            page.error_message = error_message
+            page.save()
+            succeeded, message = page.outcome()
+            if succeeded:
+                passed += 1
+            else:
+                failed += 1
+                print(message)
+finally:
+    print("RESULTS")
+    print(f"Passed              : {passed:4,d}")
+    print(f"Failed              : {failed:4,d}")
+    print(f"Not useful          : {not_useful:4,d}")
+    print(f"Previously attempted: {previously_attempted:4,d}")
