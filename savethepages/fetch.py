@@ -46,7 +46,7 @@ try:
         elif page.attempted:
             previously_attempted += 1
         else:
-            print(f"Fetch: {page.short_url()}")
+            print(f"Fetch: {page.url}")
             content, status_code, error_message = request_page(page.url)
 
             page.content = content
