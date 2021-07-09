@@ -9,6 +9,9 @@ import connection
 from models import Page
 
 
+TIMEOUT = 10
+
+
 def request_page(url):
     """
     Attempt to request a given URL and return response data on any result.
@@ -18,7 +21,7 @@ def request_page(url):
     error_message = None
 
     try:
-        resp = requests.get(url, timeout=10)
+        resp = requests.get(url, timeout=TIMEOUT)
     except requests.Timeout:
         error_message = 'timeout'
     except requests.URLRequired:
@@ -47,13 +50,16 @@ try:
             previously_attempted += 1
         else:
             print(f"Fetch: {page.short_url()}")
+
             content, status_code, error_message = request_page(page.url)
 
             page.content = content
             page.status_code = status_code
             page.error_message = error_message
             page.save()
+
             succeeded, message = page.outcome()
+
             if succeeded:
                 passed += 1
             else:
