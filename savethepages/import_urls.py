@@ -35,12 +35,13 @@ def insert_page(url, label, title=None):
         url=url,
         label=label,
     )
+
     try:
         page.save()
     except NotUniqueError:
         return False
-    else:
-        return True
+    
+    return True
 
 
 def load(label_name, pages_to_import):
