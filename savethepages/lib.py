@@ -100,4 +100,10 @@ def handle_onetab_text(file_path):
     lines = read(file_path)
 
     # Zip longest
-    return [dict(zip(('url', 'title'), line.split(' | ', 1))) for line in lines]
+    return [
+        dict(
+            zip(('url', 'title'), 
+            line.split(' | ', 1))
+        ) 
+        for line in lines
+    ]
