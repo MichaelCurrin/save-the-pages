@@ -5,8 +5,8 @@
 [![License](https://img.shields.io/badge/License-MIT-blue)](#license)
 
 [![Made with Python](https://img.shields.io/badge/Python->=3.6-blue?logo=python&logoColor=white)](https://python.org)
-[![Made with Mongo](https://img.shields.io/badge/dependency-Mongo-blue?logo=mongodb&logoColor=white)](https://www.mongodb.com/)
-
+[![Made with Mongo](https://img.shields.io/badge/Made_with-Mongo-blue?logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![Made with mongoengine](https://img.shields.io/badge/Made_with-mongoengine-blue?logo=mongodb&logoColor=white)](https://mongoengine.org/)
 
 If you have many URLs in your Bookmarks or History and you are worried about the webpages disappearing before you get to read them again, run this tool to do a bulk archive of the URLs.
 
